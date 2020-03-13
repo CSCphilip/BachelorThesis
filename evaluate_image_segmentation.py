@@ -1,3 +1,5 @@
+# Based on https://www.tensorflow.org/tutorials/images/segmentation
+
 import tensorflow as tf
 import tensorflow_datasets as tfds
 import matplotlib.pyplot as plt

@@ -1,3 +1,5 @@
+# Based on https://www.tensorflow.org/tutorials/images/segmentation
+
 import tensorflow as tf
 from tensorflow_examples.models.pix2pix import pix2pix
 import tensorflow_datasets as tfds
