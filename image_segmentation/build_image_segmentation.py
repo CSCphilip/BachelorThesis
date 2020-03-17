@@ -8,7 +8,13 @@ from IPython.display import clear_output
 import matplotlib.pyplot as plt
 import pickle
 
+# dataset is a dictionary
 dataset, info = tfds.load('oxford_iiit_pet:3.*.*', with_info=True)
+
+print(dataset)
+print()
+print(info)
+
 
 def normalize(input_image, input_mask):
   input_image = tf.cast(input_image, tf.float32) / 255.0
