@@ -40,8 +40,8 @@ class DataGen(keras.utils.Sequence):
         ground_truth = cv2.resize(ground_truth, (self.image_size, self.image_size))
 
         # Convert from BGR to RGB #TODO: uncomment
-        #image = cv2.cvtColor(image,cv2.COLOR_BGR2RGB)
-        #ground_truth = cv2.cvtColor(ground_truth,cv2.COLOR_BGR2RGB)
+        image = cv2.cvtColor(image,cv2.COLOR_BGR2RGB)
+        ground_truth = cv2.cvtColor(ground_truth,cv2.COLOR_BGR2RGB)
 
         # Normalizaing, Info: https://machinelearningmastery.com/how-to-manually-scale-image-pixel-data-for-deep-learning/
         image = image/255.0
@@ -106,7 +106,7 @@ f = plt.figure(num=None, figsize=(15,7))
 f.add_subplot(1,2,1)
 plt.imshow(x[r])
 f.add_subplot(1,2,2)
-plt.imshow(y[r])
+plt.imshow(y[r], cmap="gray")
 plt.show()
 
 # Different Convolutional Blocks
@@ -152,7 +152,7 @@ def UNet():
 
 model = UNet()
 model.compile(optimizer="adam", loss="binary_crossentropy", metrics=["acc"])
-#model.summary()
+model.summary()
 
 # Training the model
 train_gen = DataGen(train_ids, train_path, image_size=image_size, batch_size=batch_size)
@@ -166,3 +166,4 @@ model.fit(train_gen, validation_data=valid_gen, steps_per_epoch=train_steps, val
 
 # Save the model
 model.save("dr_unet.h5")
+print("model saved")

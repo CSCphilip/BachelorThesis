@@ -110,12 +110,12 @@ result = model.predict(x)
 print(x.shape)
 print(y.shape)
 print(result.shape)
+
 #result = result > 0.5
 
 i = 0
 a = result[i]
 a = np.reshape(a, (image_size,image_size))
-
 
 # fig = plt.figure()
 # fig.subplots_adjust(hspace=0.4, wspace=0.4)

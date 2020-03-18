@@ -91,7 +91,7 @@ val_data_size = 10
 
 valid_ids = train_ids[:val_data_size]
 train_ids = train_ids[val_data_size:]
-print(train_ids[0])
+
 gen = DataGen(train_ids, train_path, batch_size=batch_size, image_size=image_size)
 x, y = gen.__getitem__(0)
 print(x.shape, y.shape)
@@ -150,7 +150,7 @@ def UNet():
 
 model = UNet()
 model.compile(optimizer="adam", loss="binary_crossentropy", metrics=["acc"])
-#model.summary()
+model.summary()
 
 # Training the model
 train_gen = DataGen(train_ids, train_path, image_size=image_size, batch_size=batch_size)
@@ -176,10 +176,10 @@ fig = plt.figure()
 fig.subplots_adjust(hspace=0.4, wspace=0.4)
 
 ax = fig.add_subplot(1, 2, 1)
-ax.imshow(np.reshape(y[0]*255, (image_size, image_size)), cmap="gray")
+ax.imshow(np.reshape(y[0], (image_size, image_size)), cmap="gray")
 
 ax = fig.add_subplot(1, 2, 2)
-ax.imshow(np.reshape(result[0]*255, (image_size, image_size)), cmap="gray")
+ax.imshow(np.reshape(result[0], (image_size, image_size)), cmap="gray")
 
 
 fig = plt.figure()
