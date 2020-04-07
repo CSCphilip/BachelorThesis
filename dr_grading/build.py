@@ -1,4 +1,4 @@
-#Based on https://www.tensorflow.org/tutorials/images/transfer_learning
+# Based on https://www.tensorflow.org/tutorials/images/transfer_learning
 import tensorflow as tf
 import os
 import sys
@@ -7,8 +7,8 @@ from tqdm import tqdm
 import cv2
 import matplotlib.pyplot as plt
 
-#Must be a multiple of 32.
-img_width = 224 #TODO: make adjustments
+# Must be a multiple of 32.
+img_width = 224 # TODO: make adjustments
 img_height = 224
 img_channels = 3
 
@@ -16,7 +16,7 @@ training_img_path = 'input/training_set/'
 training_truth_path = 'truth/'
 
 train_ids = []
-input_images = 101 #To 414
+input_images = 101 # To 414
 for i in range(1, input_images):
     if(i < 10):
         train_ids.append('IDRiD_00' + str(i))
@@ -26,7 +26,7 @@ for i in range(1, input_images):
         train_ids.append('IDRiD_' + str(i))
 
 X_train = np.zeros((len(train_ids), img_width, img_height,
-        img_channels), dtype=np.float32) #dtype=np.uint8
+        img_channels), dtype=np.float32) # dtype=np.uint8
 
 print("Preprocess the training images")
 for n, id in tqdm(enumerate(train_ids), total=len(train_ids)):
@@ -81,7 +81,7 @@ model = tf.keras.Sequential([
         prediction_layer
 ])
 
-#TODO: different from the tutorial
+# TODO: different from the tutorial
 model.compile(optimizer='adam',
         loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
         metrics=['accuracy'])
@@ -90,13 +90,32 @@ model.summary()
 batch_size = 16
 epochs = 15
 
-#TODO: do fine tuning from tutorial
-#TODO: crop input images to reduce noise
-#TODO: plot learning curve
-#TODO: train on the full dataset, now no images with 0 grading exists
+# TODO: do fine tuning from tutorial
+# TODO: crop input images to reduce noise
+# TODO: plot learning curve
+# TODO: train on the full dataset, now no images with 0 grading exists
+
 history = model.fit(X_train_tensor, labels, batch_size, epochs, validation_split=0.1)
+
+# Plot training and validation accuracy values
+plt.plot(history.history['accuracy'])
+plt.plot(history.history['val_accuracy'])
+plt.title('Model accuracy')
+plt.ylabel('Accuracy')
+plt.xlabel('Epoch')
+plt.legend(['Train', 'Val'], loc='upper left')
+plt.show()
+
+# Plot training and validation loss values
+plt.plot(history.history['loss'])
+plt.plot(history.history['val_loss'])
+plt.title('Model loss')
+plt.ylabel('Loss')
+plt.xlabel('Epoch')
+plt.legend(['Train', 'Val'], loc='upper left')
+plt.show()
 
 model.save('model.h5')
 
-#TODO: come up with idea to make the model better.
+# TODO: come up with idea to make the model better.
 #Try with a different pre-trained network
