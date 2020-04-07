@@ -1,4 +1,5 @@
 # Based on https://www.tensorflow.org/tutorials/images/transfer_learning
+
 import tensorflow as tf
 import os
 import sys
@@ -16,7 +17,7 @@ training_img_path = 'input/training_set/'
 training_truth_path = 'truth/'
 
 train_ids = []
-input_images = 101 # To 414
+input_images = 101 # 414
 for i in range(1, input_images):
     if(i < 10):
         train_ids.append('IDRiD_00' + str(i))
@@ -56,16 +57,41 @@ X_train_tensor = tf.convert_to_tensor(X_train)
 print(X_train_tensor)
 
 IMG_SHAPE = (img_width, img_height, img_channels)
+
+# Instantiate a MobileNet V2 / an InceptionV3 model pre-loaded with weights trained on ImageNet, don't include the classification layers at the top (include_top=False).
+base_model = tf.keras.applications.inception_v3.InceptionV3(
+        include_top=False,
+        weights='imagenet',
+        input_shape=IMG_SHAPE
+)
+'''
 base_model = tf.keras.applications.MobileNetV2(
         input_shape=IMG_SHAPE,
         include_top=False,
         weights='imagenet')
+'''
 
 feature_batch = base_model(X_train_tensor)
 print(feature_batch.shape)
 
+# Freeze the convolutional base, this prevents the weights in a given layer from being updated during training. Change
+# to True during fine-tuning.
 base_model.trainable = False
 base_model.summary()
+
+'''
+# Fine-tuning
+
+# Let's take a look to see how many layers are in the base model
+print("Number of layers in the base model: ", len(base_model.layers))
+
+# Fine-tune from this layer onwards
+fine_tune_at = 100
+
+# Freeze all the layers before the `fine_tune_at` layer
+for layer in base_model.layers[:fine_tune_at]:
+  layer.trainable =  False
+'''
 
 global_average_layer = tf.keras.layers.GlobalAveragePooling2D()
 feature_batch_average = global_average_layer(feature_batch)
@@ -81,19 +107,27 @@ model = tf.keras.Sequential([
         prediction_layer
 ])
 
-# TODO: different from the tutorial
-model.compile(optimizer='adam',
+# BinaryCrossentropy
+# This is different from the tutorial
+base_learning_rate = 0.0001
+model.compile(optimizer = tf.keras.optimizers.RMSprop(lr=base_learning_rate),
         loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
         metrics=['accuracy'])
+'''
+# From tutorial (fine tuning section):
+base_learning_rate = 0.0001
+model.compile(loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
+              optimizer = tf.keras.optimizers.RMSprop(lr=base_learning_rate/10),
+              metrics=['accuracy'])
+'''
 model.summary()
 
 batch_size = 16
 epochs = 15
 
-# TODO: do fine tuning from tutorial
 # TODO: crop input images to reduce noise
-# TODO: plot learning curve
-# TODO: train on the full dataset, now no images with 0 grading exists 
+# TODO: train on the full dataset, now no images with 0 grading exists
+
 history = model.fit(X_train_tensor, labels, batch_size, epochs, validation_split=0.1)
 
 # Plot training and validation accuracy values
@@ -116,6 +150,3 @@ plt.show()
 
 
 model.save('model.h5')
-
-# TODO: come up with idea to make the model better.
-#Try with a different pre-trained network
