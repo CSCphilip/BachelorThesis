@@ -93,7 +93,7 @@ epochs = 15
 #TODO: do fine tuning from tutorial
 #TODO: crop input images to reduce noise
 #TODO: plot learning curve
-#TODO: train on the full dataset, now no images with 0 grading exists 
+#TODO: train on the full dataset, now no images with 0 grading exists
 history = model.fit(X_train_tensor, labels, batch_size, epochs, validation_split=0.1)
 
 model.save('model.h5')
