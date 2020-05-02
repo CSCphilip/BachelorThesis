@@ -8,15 +8,15 @@ import cv2
 import matplotlib.pyplot as plt
 
 #Must be a multiple of 32. Old = 512
-img_width = 224 #TODO: make adjustmnets
-img_height = 224
+img_width = 125 #TODO: make adjustmnets
+img_height = 125
 img_channels = 3
 
-training_img_path = 'input/training_set/'
+training_img_path = 'input/training_set_cropped/'
 training_truth_path = 'truth/'
 
 train_ids = []
-train_input_images = 101 #To 414
+train_input_images = 414 #To 414
 for i in range(1, train_input_images):
     if(i < 10):
         train_ids.append('IDRiD_00' + str(i))
@@ -52,7 +52,7 @@ _,train_labels = next(iter(training_dataset))
 X_train_tensor = tf.convert_to_tensor(X_train)
 #print(X_train_tensor)
 
-testing_img_path = 'input/testing_set/'
+testing_img_path = 'input/testing_set_cropped/'
 testing_truth_path = 'truth/'
 
 test_ids = []
@@ -100,13 +100,13 @@ print(test_labels_array)
 
 right_predicted = 0
 for i in range(len(pred_test_res)):
-    print('IMG ' + str(i) + ':')
-    print(pred_test_res[i])
-    print('Predicted label: ' + str(np.argmax(pred_test_res[i])) + ' Actual label: ' + str(test_labels_array[i]))
-    print(np.argmax(pred_test_res[i]) == test_labels_array[i])
+    #print('IMG ' + str(i) + ':')
+    #print(pred_test_res[i])
+    #print('Predicted label: ' + str(np.argmax(pred_test_res[i])) + ' Actual label: ' + str(test_labels_array[i]))
+    #print(np.argmax(pred_test_res[i]) == test_labels_array[i])
     if(np.argmax(pred_test_res[i]) == test_labels_array[i]):
         right_predicted = right_predicted + 1
-    print()
+    #print()
 print('Test images accuracy: ' + str(right_predicted/len(pred_test_res)))
 
 print()
@@ -116,11 +116,11 @@ print(train_labels_array)
 
 right_predicted = 0
 for i in range(len(pred_train_res)):
-    print('IMG ' + str(i) + ':')
-    print(pred_train_res[i])
-    print('Predicted label: ' + str(np.argmax(pred_train_res[i])) + ' Actual label: ' + str(train_labels_array[i]))
-    print(np.argmax(pred_train_res[i]) == train_labels_array[i])
+    #print('IMG ' + str(i) + ':')
+    #print(pred_train_res[i])
+    #print('Predicted label: ' + str(np.argmax(pred_train_res[i])) + ' Actual label: ' + str(train_labels_array[i]))
+    #print(np.argmax(pred_train_res[i]) == train_labels_array[i])
     if(np.argmax(pred_train_res[i]) == train_labels_array[i]):
         right_predicted = right_predicted + 1
-    print()
+    #print()
 print('Train images accuracy: ' + str(right_predicted/len(pred_train_res)))
