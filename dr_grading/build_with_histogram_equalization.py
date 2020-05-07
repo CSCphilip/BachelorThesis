@@ -94,7 +94,8 @@ _,labels = next(iter(training_dataset))
 #print(labels)
 
 X_train_tensor = tf.convert_to_tensor(X_train)
-#print(X_train_tensor)
+#print(X_train_tensor.shape)
+
 
 IMG_SHAPE = (img_width, img_height, img_channels)
 
