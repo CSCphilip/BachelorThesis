@@ -134,7 +134,7 @@ model = keras.models.load_model("model.h5")
 # Evaluate testing images
 pred_test_res = model.predict(X_test_tensor)
 test_labels_array = test_labels.numpy()
-print(test_labels_array)
+#print(test_labels_array)
 
 test_confusion_matrix = np.zeros((5,5), dtype=np.int32)
 
@@ -144,19 +144,57 @@ for i in range(len(pred_test_res)):
         test_correct_predicted += 1
     test_confusion_matrix[np.argmax(pred_test_res[i])][test_labels_array[i]] += 1
 print('Test images accuracy: ' + str(test_correct_predicted/len(pred_test_res)))
-print(len(pred_test_res))
-print(test_correct_predicted)
+print()
 
+print('Confusion matrix for test images:')
 for row in range(5):
     for column in range(5):
         print(test_confusion_matrix[row][column], end = ' ')
     print()
 print()
 
+test_sensitivity_per_class = [0.0, 0.0, 0.0, 0.0, 0.0]
+for column in range(5):
+    desired = 0
+    sum = 0
+    for row in range(5):
+        sum += test_confusion_matrix[row][column]
+        if row == column:
+            desired = test_confusion_matrix[row][column]
+    test_sensitivity_per_class[column] = desired / sum
+
+print('Sensitivity (test):')
+for i in range(5):
+    print('Class ' + str(i) + ': ' + str(test_sensitivity_per_class[i]*100))
+print()
+
+test_specificity_per_class = [0.0, 0.0, 0.0, 0.0, 0.0]
+for current_class in range(5):
+    TN = 0
+    FP = 0
+    for column in range(5):
+        for row in range(5):
+            if column == current_class:
+                continue
+            if row == current_class:
+                FP += test_confusion_matrix[row][column]
+            else:
+                TN += test_confusion_matrix[row][column]
+    test_specificity_per_class[current_class] = TN / (TN + FP)
+
+print('Specificity (test):')
+for i in range(5):
+    print('Class ' + str(i) + ': ' + str(test_specificity_per_class[i]*100))
+print()
+
+print()
+print()
+print()
+
 # Evaluate training images
 pred_train_res = model.predict(X_train_tensor)
 train_labels_array = train_labels.numpy()
-print(train_labels_array)
+#print(train_labels_array)
 
 train_confusion_matrix = np.zeros((5,5), dtype=np.int32)
 
@@ -166,11 +204,44 @@ for i in range(len(pred_train_res)):
         train_correct_predicted += 1
     train_confusion_matrix[np.argmax(pred_train_res[i])][train_labels_array[i]] += 1
 print('Train images accuracy: ' + str(train_correct_predicted/len(pred_train_res)))
-print(len(pred_train_res))
-print(train_correct_predicted)
+print()
 
+print('Confusion matrix for train images:')
 for row in range(5):
     for column in range(5):
         print(train_confusion_matrix[row][column], end = ' ')
     print()
 print()
+
+train_sensitivity_per_class = [0.0, 0.0, 0.0, 0.0, 0.0]
+for column in range(5):
+    desired = 0
+    sum = 0
+    for row in range(5):
+        sum += train_confusion_matrix[row][column]
+        if row == column:
+            desired = train_confusion_matrix[row][column]
+    train_sensitivity_per_class[column] = desired / sum
+
+print('Sensitivity (train):')
+for i in range(5):
+    print('Class ' + str(i) + ': ' + str(train_sensitivity_per_class[i]*100))
+print()
+
+train_specificity_per_class = [0.0, 0.0, 0.0, 0.0, 0.0]
+for current_class in range(5):
+    TN = 0
+    FP = 0
+    for column in range(5):
+        for row in range(5):
+            if column == current_class:
+                continue
+            if row == current_class:
+                FP += train_confusion_matrix[row][column]
+            else:
+                TN += train_confusion_matrix[row][column]
+    train_specificity_per_class[current_class] = TN / (TN + FP)
+
+print('Specificity (train):')
+for i in range(5):
+    print('Class ' + str(i) + ': ' + str(train_specificity_per_class[i]*100))

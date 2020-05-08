@@ -210,7 +210,7 @@ plt.figure(figsize=(8, 8))
 plt.subplot(2, 1, 1)
 plt.plot(acc, label='Training Accuracy')
 plt.plot(val_acc, label='Validation Accuracy')
-plt.ylim([0.25, 0.8])
+plt.ylim([0.2, 0.9])
 plt.plot([initial_epochs-1,initial_epochs-1],
           plt.ylim(), label='Start Fine Tuning')
 plt.legend(loc='upper left')
