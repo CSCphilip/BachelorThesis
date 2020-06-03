@@ -1,3 +1,5 @@
 env/
 from_scratch_unet/logs
 dr_grading/model.h5
+dr_grading/best_model_yet.h5
+dr_grading/input

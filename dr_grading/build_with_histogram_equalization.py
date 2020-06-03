@@ -77,9 +77,9 @@ for n, id in tqdm(enumerate(train_ids), total=len(train_ids)):
     X_train[n] = input_img
 print("Done!")
 
-for i in range(1):
-    plt.imshow(X_train[i])
-    plt.show()
+# for i in range(1):
+#     plt.imshow(X_train[i])
+#     plt.show()
 
 csv_batch_size = input_images - 1
 label_name = 'Retinopathy grade'
@@ -148,22 +148,22 @@ loss = history.history['loss']
 val_loss = history.history['val_loss']
 
 # Plot training and validation accuracy values
-plt.plot(history.history['accuracy'])
-plt.plot(history.history['val_accuracy'])
-plt.title('Model accuracy')
-plt.ylabel('Accuracy')
-plt.xlabel('Epoch')
-plt.legend(['Train', 'Val'], loc='upper left')
-plt.show()
-
-# Plot training and validation loss values
-plt.plot(history.history['loss'])
-plt.plot(history.history['val_loss'])
-plt.title('Model loss')
-plt.ylabel('Loss')
-plt.xlabel('Epoch')
-plt.legend(['Train', 'Val'], loc='upper left')
-plt.show()
+# plt.plot(history.history['accuracy'])
+# plt.plot(history.history['val_accuracy'])
+# plt.title('Model accuracy')
+# plt.ylabel('Accuracy')
+# plt.xlabel('Epoch')
+# plt.legend(['Train', 'Val'], loc='upper left')
+# plt.show()
+#
+# # Plot training and validation loss values
+# plt.plot(history.history['loss'])
+# plt.plot(history.history['val_loss'])
+# plt.title('Model loss')
+# plt.ylabel('Loss')
+# plt.xlabel('Epoch')
+# plt.legend(['Train', 'Val'], loc='upper left')
+# plt.show()
 
 # Fine tuning
 
@@ -197,6 +197,7 @@ history_fine = model.fit(X_train_tensor, labels, batch_size,
                          validation_split=0.1)
 
 model.save('model.h5')
+
 
 # Results used in ploting later
 acc += history_fine.history['accuracy']

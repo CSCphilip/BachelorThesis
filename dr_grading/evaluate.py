@@ -8,7 +8,7 @@ import cv2
 import matplotlib.pyplot as plt
 
 #Must be a multiple of 32. Old = 512
-img_width = 125 #TODO: make adjustmnets
+img_width = 125
 img_height = 125
 img_channels = 3
 
@@ -127,7 +127,6 @@ _,test_labels = next(iter(testing_dataset))
 
 X_test_tensor = tf.convert_to_tensor(X_test)
 
-
 # Load model
 model = keras.models.load_model("model.h5")
 
@@ -143,7 +142,7 @@ for i in range(len(pred_test_res)):
     if(np.argmax(pred_test_res[i]) == test_labels_array[i]):
         test_correct_predicted += 1
     test_confusion_matrix[np.argmax(pred_test_res[i])][test_labels_array[i]] += 1
-print('Test images accuracy: ' + str(test_correct_predicted/len(pred_test_res)))
+print('Test images accuracy: ' + str((test_correct_predicted/len(pred_test_res))*100))
 print()
 
 print('Confusion matrix for test images:')
@@ -203,7 +202,7 @@ for i in range(len(pred_train_res)):
     if(np.argmax(pred_train_res[i]) == train_labels_array[i]):
         train_correct_predicted += 1
     train_confusion_matrix[np.argmax(pred_train_res[i])][train_labels_array[i]] += 1
-print('Train images accuracy: ' + str(train_correct_predicted/len(pred_train_res)))
+print('Train images accuracy: ' + str((train_correct_predicted/len(pred_train_res))*100))
 print()
 
 print('Confusion matrix for train images:')
